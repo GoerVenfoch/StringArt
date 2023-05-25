@@ -1,6 +1,7 @@
 class MainScreenModel:
     def __init__(self):
         self._observers = []
+        self.selected_file = ''
 
     def notify_observers(self):
         for observer in self._observers:

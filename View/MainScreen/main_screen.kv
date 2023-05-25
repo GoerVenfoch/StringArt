@@ -1,3 +1,5 @@
+#:import Factory kivy.factory.Factory
+
 <MainScreenView>:
     RelativeLayout:
         canvas.before:
@@ -25,8 +27,8 @@
                 md_bg_color: (10/255, 100/255, 10/255, 1)
                 text_color: (1, 1, 1, 1)
                 radius: [20]
-                #on_release:
-                    #Factory.SelectImagePins().open()
+                on_release:
+                    Factory.SelectImagePins(root.return_controller(), root.return_model()).open()
 
             MDRectangleFlatButton:
                 text: ':'
@@ -43,5 +45,86 @@
                 size_hint: 3, None
                 text_color: (1, 1, 1, 1)
                 radius: [20]
-                #on_release:
-                    #Factory.SelectProject().open()
+                on_release:
+                    Factory.SelectProject(root.return_controller(), root.return_model()).open()
+
+<SelectImagePins>:
+    title: 'Select an image and an number pins'
+    size_hint: .8, .9
+
+    MDBoxLayout:
+        orientation: 'vertical'
+        padding: '20dp'
+
+        FileChooserIconView:
+            id: filechooser
+            on_selection: root.model.selected_file = filechooser.selection
+            size_hint: 1, 10
+        MDLabel:
+            text: 'Number pins: ' + str(int(slider_pins_id.value))
+            color: (1, 1, 1, 1)
+            halign: "center"
+            size_hint: 1, 1
+        MDSlider:
+            id: slider_pins_id
+            max: 300
+            min: 100
+            value:200
+            size_hint: 1, 1
+        MDLabel:
+            text: 'Number lines: ' + str(int(slider_lines_id.value))
+            color: (1, 1, 1, 1)
+            halign: "center"
+            size_hint: 1, 1
+        MDSlider:
+            id: slider_lines_id
+            max: 4000
+            min: 1000
+            value:2000
+            size_hint: 1, 1
+        MDLabel:
+            text: 'Pixel brightness: ' + str(int(slider_pins_id.value))
+            color: (1, 1, 1, 1)
+            halign: "center"
+            size_hint: 1, 1
+        MDSlider:
+            id: slider_thread_id
+            max: 100
+            min: 0
+            value: 50
+            size_hint: 1, 1
+        MDRectangleFlatButton:
+            id: btn_ok
+            text: 'OK'
+            md_bg_color: (10/255, 100/255, 10/255, 1)
+            text_color: (1, 1, 1, 1)
+            radius: [20]
+            size_hint: 1, None
+            on_release:
+                root.generate_file(int(slider_pins_id.value), int(slider_lines_id.value), int(slider_thread_id.value))
+                root.dismiss()
+                #Factory.ProgressGenerateImage().open()
+
+<SelectProject>:
+    title: 'Select file an project'
+    size_hint: .8, .9
+
+    MDBoxLayout:
+        orientation: 'vertical'
+        padding: '20dp'
+
+        FileChooserIconView:
+            id: filechooser
+            on_selection: root.model.selected_file = filechooser.selection
+            size_hint: 1, 10
+
+        MDRectangleFlatButton:
+            id: btn_ok
+            text: 'OK'
+            md_bg_color: (10/255, 100/255, 10/255, 1)
+            text_color: (1, 1, 1, 1)
+            radius: [20]
+            size_hint: 1, None
+            on_release:
+                root.open_project()
+                root.dismiss()
