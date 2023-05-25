@@ -9,6 +9,6 @@ class MainScreenController:
     def get_view(self) -> MainScreenView:
         return self.view
 
-    # def switch_screen(self, screen_name):
-    #     self.manager_screens.current = screen_name
+    def switch_screen(self, screen_name):
+        self.view.manager_screens.current = screen_name
 

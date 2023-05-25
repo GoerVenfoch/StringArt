@@ -8,3 +8,6 @@ class ViewStrArtScreenController:
 
     def get_view(self) -> ViewStrArtScreenView:
         return self.view
+
+    def switch_screen(self, screen_name):
+        self.view.manager_screens.current = screen_name

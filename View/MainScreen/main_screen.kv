@@ -103,6 +103,7 @@
             on_release:
                 root.generate_file(int(slider_pins_id.value), int(slider_lines_id.value), int(slider_thread_id.value))
                 root.dismiss()
+                root.controller.switch_screen('view screen')
                 #Factory.ProgressGenerateImage().open()
 
 <SelectProject>:
@@ -128,3 +129,4 @@
             on_release:
                 root.open_project()
                 root.dismiss()
+                root.controller.switch_screen('view screen')
