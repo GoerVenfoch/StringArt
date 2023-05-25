@@ -1,0 +1,47 @@
+<MainScreenView>:
+    RelativeLayout:
+        canvas.before:
+            Color:
+                rgba: (128, 0, 128, 0.5)
+            Rectangle:
+                size: self.size
+                pos: self.pos
+        Label:
+            text: "String Art"
+            size_hint: None, None
+            size: self.texture_size
+            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+
+        BoxLayout:
+            orientation: 'horizontal'
+            size: root.width, root.height
+            padding: 20
+            spacing: 20
+
+            MDRectangleFlatButton:
+                id: button_input_image
+                text: 'Import image'
+                size_hint: 3, None
+                md_bg_color: (10/255, 100/255, 10/255, 1)
+                text_color: (1, 1, 1, 1)
+                radius: [20]
+                #on_release:
+                    #Factory.SelectImagePins().open()
+
+            MDRectangleFlatButton:
+                text: ':'
+                md_bg_color: (10/255, 100/255, 10/255, 1)
+                text_color: (1, 1, 1, 1)
+                radius: [20]
+                #on_release:
+                    #root.print_h()
+
+            MDRectangleFlatButton:
+                id: button_open_project
+                text: 'Сontinue the project'
+                md_bg_color: (10/255, 100/255, 10/255, 1)
+                size_hint: 3, None
+                text_color: (1, 1, 1, 1)
+                radius: [20]
+                #on_release:
+                    #Factory.SelectProject().open()
