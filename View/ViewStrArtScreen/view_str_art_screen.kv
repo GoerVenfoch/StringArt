@@ -1,0 +1,50 @@
+<ViewStrArtScreenView>:
+    MDRelativeLayout:
+        orientation: 'vertical'
+        size: root.width, root.height
+        canvas.before:
+            Color:
+                rgba: (128, 0, 128, 0.5)
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
+        Widget:
+            id: widget_canvas
+            size_hint: None, None
+            size: root.width, root.width
+            pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+            canvas.before:
+                Color:
+                    rgba: (1, 1, 1, 1)
+                Ellipse:
+                    size: self.size
+                    pos: self.pos
+
+        MDBoxLayout:
+            orientation: 'horizontal'
+            # size: root.width, root.height
+            padding: 20
+            spacing: 20
+
+            canvas.before:
+                Color:
+                    rgba: (18, 0, 128, 0.5)
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+
+            MDRectangleFlatButton:
+                text: 'Back'
+                md_bg_color: (10/255, 100/255, 10/255, 1)
+                size_hint: 1, 0
+                text_color: (1, 1, 1, 1)
+                radius: [20]
+                #on_release: root.back_main()
+
+            MDRectangleFlatButton:
+                text: 'Next'
+                md_bg_color: (10/255, 100/255, 10/255, 1)
+                size_hint: 1, 0
+                text_color: (1, 1, 1, 1)
+                radius: [20]
