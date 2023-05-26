@@ -4,20 +4,24 @@ from kivy.properties import ObjectProperty
 from kivy.uix.popup import Popup
 from kivymd.toast import toast
 from kivymd.uix.screen import MDScreen
+
 from Utility.observer import Observer
+from Utility.subject import Subject
 
 
 class MainScreenView(MDScreen, Observer):
     controller = ObjectProperty()
     model = ObjectProperty()
     manager_screens = ObjectProperty()
+    subject = Subject()
 
     def __init__(self, **kw):
         super().__init__(**kw)
-        self.model.add_observer(self)
+        self.subject.attach(self)
 
-    def model_is_changed(self):
-        pass
+    def update(self, subject):
+        if subject._path_file != "":
+            self.model.selected_file = subject._path_file
 
     def return_model(self):
         return self.model
@@ -26,11 +30,14 @@ class MainScreenView(MDScreen, Observer):
         return self.controller
 
 
-class SelectImagePins(Popup):
+class SelectImagePins(Popup, Observer):
+    subject = Subject()
+
     def __init__(self, controller, model, **kwargs):
         super().__init__(**kwargs)
         self.model = model
         self.controller = controller
+        self.subject.attach(self)
 
     def generate_file(self, num_pins, num_lines, num_thread):
         if not self.model.selected_file:
@@ -40,15 +47,19 @@ class SelectImagePins(Popup):
         if expansion != '.png' and expansion != '.jpg':
             toast("Error with the expansion an file!")
             return
-        print(self.model.selected_file)
+        self.subject.put_path_file(self.model.selected_file)
+        self.subject.detach(self)
         # generate.generate_sa(self.selected_file[0], num_pins, num_lines, num_thread)
 
 
-class SelectProject(Popup):
+class SelectProject(Popup, Observer):
+    subject = Subject()
+
     def __init__(self, controller, model, **kwargs):
         super().__init__(**kwargs)
         self.model = model
         self.controller = controller
+        self.subject.attach(self)
 
     def open_project(self):
         if not self.model.selected_file:
@@ -58,6 +69,8 @@ class SelectProject(Popup):
             toast("Error with the expansion an file!")
             return
         print(self.model.selected_file)
+        self.subject.put_path_file(self.model.selected_file)
+        self.subject.detach(self)
 
 
 class ProgressGenerateImage(Popup):

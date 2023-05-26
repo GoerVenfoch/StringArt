@@ -1,3 +1,3 @@
 class Observer:
-    def model_is_changed(self):
+    def update(self, subject):
         pass

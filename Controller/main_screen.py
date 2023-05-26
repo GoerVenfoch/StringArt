@@ -11,4 +11,3 @@ class MainScreenController:
 
     def switch_screen(self, screen_name):
         self.view.manager_screens.current = screen_name
-
