@@ -58,7 +58,7 @@
 
         FileChooserIconView:
             id: filechooser
-            on_selection: root.model.selected_file = filechooser.selection
+            on_selection: root.model.selected_file = filechooser.selection[0]
             size_hint: 1, 10
         MDLabel:
             text: 'Number pins: ' + str(int(slider_pins_id.value))
@@ -116,7 +116,7 @@
 
         FileChooserIconView:
             id: filechooser
-            on_selection: root.model.selected_file = filechooser.selection
+            on_selection: root.model.selected_file = filechooser.selection[0]
             size_hint: 1, 10
 
         MDRectangleFlatButton:
