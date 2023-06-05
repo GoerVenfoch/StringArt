@@ -27,6 +27,7 @@ class ViewInstructionScreenView(MDScreen, Observer):
         self.model.list_inst = subject._list_inst
 
     def on_enter(self):
+        self.ids.play_pause_button.icon = "pause"
         self.on_start()
 
     def on_start(self):
