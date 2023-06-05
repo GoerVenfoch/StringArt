@@ -19,6 +19,7 @@ class MainScreenView(MDScreen, Observer):
         super().__init__(**kw)
         self.subject.attach(self)
 
+
     def update(self, subject):
         if subject._path_file != "":
             self.model.selected_file = subject._path_file
@@ -47,7 +48,7 @@ class SelectImagePins(Popup, Observer):
         if expansion != '.png' and expansion != '.jpg':
             toast("Error with the expansion an file!")
             return
-        self.subject.put_path_file(self.model.selected_file)
+        self.subject.put_data(self.model.selected_file, self.model.num_points, self.model.list_inst)
         self.subject.detach(self)
         # generate.generate_sa(self.selected_file[0], num_pins, num_lines, num_thread)
 
@@ -68,8 +69,7 @@ class SelectProject(Popup, Observer):
         if os.path.splitext(self.model.selected_file[0])[1] != '':
             toast("Error with the expansion an file!")
             return
-        print(self.model.selected_file)
-        self.subject.put_path_file(self.model.selected_file)
+        self.subject.put_data(self.model.selected_file, self.model.num_points, self.model.list_inst)
         self.subject.detach(self)
 
 
