@@ -1,3 +1,5 @@
+from kivy.clock import Clock
+
 from View.ViewInstuctionScreen.view_instuction_screen import ViewInstructionScreenView
 
 
@@ -10,4 +12,7 @@ class ViewInstructionScreenController:
         return self.view
 
     def switch_screen(self, screen_name):
+        Clock.unschedule(self.view.read_list_inst)
+        self.model.buffer_outlist = [''] * self.model.size_list_buffer_outlist
+        self.model.current_ind_list = 0
         self.view.manager_screens.current = screen_name

@@ -1,0 +1,118 @@
+#:import Factory kivy.factory.Factory
+
+<ViewInstructionScreenView>:
+    MDRectangleFlatButton:
+        pos: 0, root.height - self.height
+        on_release:
+            root.controller.switch_screen('view screen')
+        Image:
+            source: "assets//view_instruction_data//back.png"
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDBoxLayout:
+            padding: 10
+
+            MDBoxLayout:
+                orientation: 'vertical'
+                size_hint: 1, 1
+
+
+                MDBoxLayout:
+                    orientation: "vertical"
+                    size_hint: 1, 1
+                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                    canvas.before:
+                        Color:
+                            rgba: (12, 0, 12, 0.3)
+                        Rectangle:
+                            size: self.size
+                            pos: self.pos
+
+                    MDRectangleFlatButton:
+                        text: "1"
+                        size_hint: .5, None
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+                    MDRectangleFlatButton:
+                        text: "2"
+                        size_hint: .5, None
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+                    MDRectangleFlatButton:
+                        text: "3"
+                        size_hint: .5, None
+                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+
+            MDBoxLayout:
+                id: inst_list
+                size_hint: 2.5, 1
+                orientation: 'vertical'
+
+            MDGridLayout:
+                cols: 1
+                rows: 3
+                size_hint: 1, 1
+
+                Widget:
+
+                MDFloatingActionButton:
+                    id: play_pause_button
+                    icon: "pause"
+                    md_bg_color: 0, 0, 0, 0
+                    size_hint: 1, None
+                    on_type: small
+                    on_release: root.toggle_play_pause()
+
+                Widget:
+
+        MDBoxLayout:
+            orientation: 'horizontal'
+            size_hint: 1, .1
+            padding: 10
+
+            MDRectangleFlatButton:
+                size_hint: 1.5, 1
+                radius: [20]
+                Image:
+                    source: "assets//view_instruction_data//mic.png"
+
+            MDLabel:
+                id: num_lines
+                text: "0/0"
+                halign: 'center'
+                size_hint: 1, 1
+
+            MDRectangleFlatButton:
+                size_hint: 1.5, 1
+                radius: [20]
+                on_release:
+                    Factory.SearchLine(root).open()
+                Image:
+                    source: "assets//view_instruction_data//zoom.png"
+
+
+<SearchLine>:
+    title: 'Search line'
+    size_hint: .5, .3
+
+    MDBoxLayout:
+        orientation: 'vertical'
+        padding: '20dp'
+
+        MDTextField:
+            id: input_field
+            hint_text: "Enter the line number"
+            size_hint: 1, None
+
+        MDRectangleFlatButton:
+            id: btn_ok
+            text: 'OK'
+            md_bg_color: (10/255, 100/255, 10/255, 1)
+            text_color: (1, 1, 1, 1)
+            radius: [20]
+            size_hint: 1, None
+            on_release:
+                root.search_line(input_field.text)
+                root.dismiss()
