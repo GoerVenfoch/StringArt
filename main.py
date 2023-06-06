@@ -1,3 +1,5 @@
+from kivy import Config, platform
+from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager
 from kivymd.app import MDApp
 from View.screens import screens
@@ -11,6 +13,13 @@ class StringArtApp(MDApp):
 
     def build(self):
         self.generate_application_screens()
+        self.icon = "assets//window_icon//win_icon.jpg"
+
+        if platform == 'win':
+            Window.size = (400, 600)
+        elif platform == 'android':
+            Window.fullscreen = True
+
         return self.manager_screens
 
     def generate_application_screens(self):

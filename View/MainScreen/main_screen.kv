@@ -1,49 +1,66 @@
 #:import Factory kivy.factory.Factory
+#:import Colors Utility.colors
 
 <MainScreenView>:
-    MDRelativeLayout:
+    MDBoxLayout:
+        orientation: 'vertical'
+
         canvas.before:
             Color:
-                rgba: (128, 0, 128, 0.5)
+                rgba: Colors.background_color
             Rectangle:
                 size: self.size
                 pos: self.pos
-        Label:
-            text: "String Art"
-            size_hint: None, None
-            size: self.texture_size
-            pos_hint: {'center_x': 0.5, 'center_y': 0.5}
 
-        BoxLayout:
+        MDLabel:
+            text: "String Art"
+            size_hint: 1, 1
+            halign: 'center'
+
+        MDBoxLayout:
             orientation: 'horizontal'
-            size: root.width, root.height
+            size_hint: 1, .15
             padding: 20
             spacing: 20
 
             MDRectangleFlatButton:
                 id: button_input_image
-                text: 'Import image'
-                size_hint: 3, None
-                md_bg_color: (10/255, 100/255, 10/255, 1)
-                text_color: (1, 1, 1, 1)
+                text: 'Загрузить изображение'
+                text_size: self.size
+                font_size: 20
+                bold: True
+                size_hint: 5, 1
+                md_bg_color: Colors.button_color
+                text_color: Colors.background_color
                 radius: [20]
                 on_release:
                     Factory.SelectImagePins(root.return_controller(), root.return_model()).open()
 
             MDRectangleFlatButton:
-                text: ':'
-                md_bg_color: (10/255, 100/255, 10/255, 1)
-                text_color: (1, 1, 1, 1)
+                size_hint: 1, 1
+                md_bg_color: Colors.button_color
                 radius: [20]
+                canvas:
+                    Color:
+                        rgba: Colors.background_color
+                    Ellipse:
+                        pos: self.center_x - 7, self.center_y - 7
+                        size: 14, 14
+                    Ellipse:
+                        pos: self.center_x - 7, self.center_y + 12
+                        size: 14, 14
+                    Ellipse:
+                        pos: self.center_x - 7, self.center_y - 26
+                        size: 14, 14
                 #on_release:
                     #root.print_h()
 
             MDRectangleFlatButton:
                 id: button_open_project
                 text: 'Сontinue the project'
-                md_bg_color: (10/255, 100/255, 10/255, 1)
-                size_hint: 3, None
-                text_color: (1, 1, 1, 1)
+                md_bg_color: Colors.button_color
+                size_hint: 5, 1
+                text_color: Colors.background_color
                 radius: [20]
                 on_release:
                     Factory.SelectProject(root.return_controller(), root.return_model()).open()
