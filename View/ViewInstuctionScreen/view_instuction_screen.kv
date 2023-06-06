@@ -9,41 +9,57 @@
             source: "assets//view_instruction_data//back.png"
 
     MDBoxLayout:
+        size_hint: None, None
+        size: '80dp', '40dp'
+        pos_hint: {'center_x': .5, 'center_y': .546}
+        canvas:
+            Color:
+                rgba: 1, 233 / 255, 92 / 255, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+            Color:
+                rgba: 1, 1, 1, 1
+            Rectangle:
+                size: self.width / 1.2, self.height / 1.2
+                pos: self.center_x - self.width / 2.4, self.center_y - self.height / 2.4
+
+
+    MDBoxLayout:
         orientation: 'vertical'
 
         MDBoxLayout:
             padding: 10
 
-            MDBoxLayout:
-                orientation: 'vertical'
+            MDGridLayout:
+                cols: 1
+                rows: 3
                 size_hint: 1, 1
 
+                Widget:
 
                 MDBoxLayout:
-                    orientation: "vertical"
+                    orientation: "horizontal"
                     size_hint: 1, 1
-                    pos_hint: {"center_x": 0.5, "center_y": 0.5}
-                    canvas.before:
-                        Color:
-                            rgba: (12, 0, 12, 0.3)
-                        Rectangle:
-                            size: self.size
-                            pos: self.pos
+                    padding: 10
 
-                    MDRectangleFlatButton:
-                        text: "1"
-                        size_hint: .5, None
-                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                    MDSlider:
+                        id: slider_speed_id
+                        orientation: "vertical"
+                        max: 5
+                        min: -5
+                        value: 0
+                        hint: False
+                        size_hint: 1, 1
+                        on_value: root.schedule_read_list_inst()
 
-                    MDRectangleFlatButton:
-                        text: "2"
-                        size_hint: .5, None
-                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                    MDLabel:
+                        text: str(int(slider_speed_id.value))
+                        color: (0, 0, 0, 1)
+                        halign: "center"
+                        size_hint: 1, 1
 
-                    MDRectangleFlatButton:
-                        text: "3"
-                        size_hint: .5, None
-                        pos_hint: {"center_x": 0.5, "center_y": 0.5}
+                Widget:
 
             MDBoxLayout:
                 id: inst_list
