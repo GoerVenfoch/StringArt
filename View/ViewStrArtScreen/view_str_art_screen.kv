@@ -4,7 +4,7 @@
         size: root.width, root.height
         canvas.before:
             Color:
-                rgba: (128, 0, 128, 0.5)
+                rgba: Colors.background_color
             Rectangle:
                 size: self.size
                 pos: self.pos
@@ -15,30 +15,22 @@
 
         MDBoxLayout:
             orientation: 'horizontal'
-            # size: root.width, root.height
             size_hint: 1, .2
             padding: 20
             spacing: 20
 
-            canvas.before:
-                Color:
-                    rgba: (18, 0, 128, 0.5)
-                Rectangle:
-                    size: self.size
-                    pos: self.pos
-
             MDRectangleFlatButton:
-                text: 'Back'
-                md_bg_color: (10/255, 100/255, 10/255, 1)
+                text: 'Назад'
+                md_bg_color: Colors.button_color
                 size_hint: 1, 0
-                text_color: (1, 1, 1, 1)
+                text_color: Colors.background_color
                 radius: [20]
                 on_release: root.controller.switch_screen('main screen')
 
             MDRectangleFlatButton:
-                text: 'Next'
-                md_bg_color: (10/255, 100/255, 10/255, 1)
+                text: 'Вперед'
+                md_bg_color: Colors.button_color
                 size_hint: 1, 0
-                text_color: (1, 1, 1, 1)
+                text_color: Colors.background_color
                 radius: [20]
                 on_release: root.controller.switch_screen('view instruction')

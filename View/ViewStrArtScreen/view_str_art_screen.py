@@ -3,6 +3,7 @@ import math
 from kivy.graphics import Color, Ellipse, Line
 from kivy.properties import ObjectProperty
 from kivy.uix.widget import Widget
+from kivymd.toast import toast
 from kivymd.uix.screen import MDScreen
 
 from Utility.subject import Subject
@@ -20,16 +21,18 @@ class ViewStrArtScreenView(MDScreen, Observer):
         self.subject.attach(self)
 
     def on_enter(self):
-        self.read_file()
-        print(self.model.selected_file)
-        self.ids.container.clear_widgets()
-        self.ids.container.add_widget(StringArtPreview(self.model.num_points, self.model))
+        try:
+            self.read_file()
+            self.ids.container.clear_widgets()
+            self.ids.container.add_widget(StringArtPreview(self.controller, self.model))
+        except FileNotFoundError:
+            toast("Невозможно открыть файл")
+            self.controller.switch_screen('main screen')
 
     def update(self, subject: Subject):
         self.model.selected_file = subject._path_file
 
     def read_file(self):
-        print(self.model.selected_file)
         with open(self.model.selected_file, 'r') as file:
             line = file.readline()
             parts = line.split('.')
@@ -40,17 +43,23 @@ class ViewStrArtScreenView(MDScreen, Observer):
 
 
 class StringArtPreview(Widget):
-    def __init__(self, num, model, **kwargs):
+    def __init__(self, controller, model, **kwargs):
         super().__init__(**kwargs)
         self.bind(pos=self.update, size=self.update)
-        self.num_points = num
+        self.num_points = model.num_points
+        self.controller = controller
         self.model = model
         self.model.list_point.clear()
 
     def update(self, *args):
-        self.model.list_point.clear()
-        self.draw_points()
-        self.draw_line()
+        try:
+            self.model.list_point.clear()
+            self.draw_points()
+            self.draw_line()
+        except ValueError:
+            toast("Невозможно прочитать файл")
+            self.controller.switch_screen('main screen')
+
 
     def draw_points(self):
         self.canvas.clear()

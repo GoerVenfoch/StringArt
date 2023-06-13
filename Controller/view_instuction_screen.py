@@ -20,3 +20,4 @@ class ViewInstructionScreenController:
         self.model.buffer_outlist = [''] * self.model.size_list_buffer_outlist
         self.model.current_ind_list = 0
         self.model.is_paused = None
+        self.model.schedule_interval = 6

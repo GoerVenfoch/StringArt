@@ -13,9 +13,22 @@
                 pos: self.pos
 
         MDLabel:
-            text: "String Art"
-            size_hint: 1, 1
+            text: "Добро пожаловать в мир String Art!"
+            size_hint: 1, .25
             halign: 'center'
+            bold: True
+            font_size: 35
+            padding: 100
+            color: Colors.button_color
+
+        MDLabel:
+            text: "String Art - это творческое приложение, которое позволяет вам создавать красивые и уникальные произведения искусства из нитей и гвоздей. Откройте для себя магию сочетания цветов, форм и текстур, чтобы создать потрясающие картины, которые украсят ваш дом или станут идеальным подарком для ваших близких. Вам не нужны специальные навыки или предварительный опыт в искусстве, чтобы начать свое творчество с String Art. Наше интуитивно понятное и простое в использовании приложение предоставляет вам все необходимое для воплощения ваших идей в жизнь."
+            size_hint: 1, .85
+            halign: 'center'
+            font_size: 28
+            padding: 20
+            color: Colors.button_color
+            #md_bg_color: Colors.button_color
 
         MDBoxLayout:
             orientation: 'horizontal'
@@ -25,10 +38,7 @@
 
             MDRectangleFlatButton:
                 id: button_input_image
-                text: 'Загрузить изображение'
-                text_size: self.size
-                font_size: 20
-                bold: True
+                text: 'Загрузить\nизображение'
                 size_hint: 5, 1
                 md_bg_color: Colors.button_color
                 text_color: Colors.background_color
@@ -57,7 +67,7 @@
 
             MDRectangleFlatButton:
                 id: button_open_project
-                text: 'Сontinue the project'
+                text: 'Продолжить\nпроект'
                 md_bg_color: Colors.button_color
                 size_hint: 5, 1
                 text_color: Colors.background_color
@@ -66,7 +76,7 @@
                     Factory.SelectProject(root.return_controller(), root.return_model()).open()
 
 <SelectImagePins>:
-    title: 'Select an image and an number pins'
+    title: 'Выбрать изображение и входные параметры'
     size_hint: .8, .9
 
     MDBoxLayout:
@@ -78,8 +88,8 @@
             on_selection: root.model.selected_file = filechooser.selection[0]
             size_hint: 1, 10
         MDLabel:
-            text: 'Number pins: ' + str(int(slider_pins_id.value))
-            color: (1, 1, 1, 1)
+            text: 'Количество пинов: ' + str(int(slider_pins_id.value))
+            color: Colors.background_color
             halign: "center"
             size_hint: 1, 1
         MDSlider:
@@ -87,21 +97,23 @@
             max: 300
             min: 100
             value:200
+            hint: False
             size_hint: 1, 1
         MDLabel:
-            text: 'Number lines: ' + str(int(slider_lines_id.value))
-            color: (1, 1, 1, 1)
+            text: 'Количество линий: ' + str(int(slider_lines_id.value))
+            color: Colors.background_color
             halign: "center"
             size_hint: 1, 1
         MDSlider:
             id: slider_lines_id
-            max: 4000
-            min: 1000
-            value:2000
+            max: 2000
+            min: 500
+            value:1000
+            hint: False
             size_hint: 1, 1
         MDLabel:
-            text: 'Pixel brightness: ' + str(int(slider_pins_id.value))
-            color: (1, 1, 1, 1)
+            text: 'Прозрачность линии: ' + str(int(slider_thread_id.value))
+            color: Colors.background_color
             halign: "center"
             size_hint: 1, 1
         MDSlider:
@@ -109,22 +121,20 @@
             max: 100
             min: 0
             value: 50
+            hint: False
             size_hint: 1, 1
         MDRectangleFlatButton:
             id: btn_ok
             text: 'OK'
-            md_bg_color: (10/255, 100/255, 10/255, 1)
-            text_color: (1, 1, 1, 1)
+            md_bg_color: Colors.button_color
+            text_color: Colors.background_color
             radius: [20]
             size_hint: 1, None
             on_release:
                 root.generate_file(int(slider_pins_id.value), int(slider_lines_id.value), int(slider_thread_id.value))
-                root.dismiss()
-                root.controller.switch_screen('view screen')
-                #Factory.ProgressGenerateImage().open()
 
 <SelectProject>:
-    title: 'Select file an project'
+    title: 'Выбрать файл проекта'
     size_hint: .8, .9
 
     MDBoxLayout:
@@ -139,11 +149,10 @@
         MDRectangleFlatButton:
             id: btn_ok
             text: 'OK'
-            md_bg_color: (10/255, 100/255, 10/255, 1)
-            text_color: (1, 1, 1, 1)
+            md_bg_color: Colors.button_color
+            text_color: Colors.background_color
             radius: [20]
             size_hint: 1, None
             on_release:
                 root.open_project()
                 root.dismiss()
-                root.controller.switch_screen('view screen')

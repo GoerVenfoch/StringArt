@@ -1,0 +1,31 @@
+#:import Colors Utility.colors
+
+<ProgressGenerateImage>:
+    title: 'Генерируем изображение'
+    size_hint: .5, .3
+    auto_dismiss: False
+
+    MDBoxLayout:
+        orientation: 'vertical'
+
+        MDLabel:
+            text: str(int(progress_bar_id.value) / int(progress_bar_id.max) * 100)
+            halign: 'center'
+            color: 1, 1, 1, 1
+            size_hint: 1, .3
+
+        MDProgressBar:
+            id: progress_bar_id
+            size_hint: 1, .4
+            min: 0
+
+        MDRectangleFlatButton:
+            id: next_progress_id
+            text: 'Продолжить'
+            md_bg_color: Colors.button_color
+            size_hint: 1, .3
+            text_color: Colors.background_color
+            radius: [20]
+            disabled: True
+            on_release:
+                root.dismiss()

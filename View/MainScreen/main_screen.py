@@ -1,3 +1,4 @@
+import threading
 import os
 
 from kivy.properties import ObjectProperty
@@ -5,8 +6,10 @@ from kivy.uix.popup import Popup
 from kivymd.toast import toast
 from kivymd.uix.screen import MDScreen
 
+from Utility import generate
 from Utility.observer import Observer
 from Utility.subject import Subject
+from View.Popup.ProgressGenerateImage.ProgressGenerateImage import ProgressGenerateImage
 
 
 class MainScreenView(MDScreen, Observer):
@@ -19,7 +22,6 @@ class MainScreenView(MDScreen, Observer):
         super().__init__(**kw)
         self.subject.attach(self)
 
-
     def update(self, subject):
         if subject._path_file != "":
             self.model.selected_file = subject._path_file
@@ -29,6 +31,13 @@ class MainScreenView(MDScreen, Observer):
 
     def return_controller(self):
         return self.controller
+
+
+# async def async_generate_sa(controller, selected_file, num_pins, num_lines, num_thread):
+#     await asyncio.sleep(0)
+#     toast("jjjj")
+#     generate.generate_sa(selected_file, num_pins, num_lines, num_thread)
+#     controller.switch_screen('view screen')
 
 
 class SelectImagePins(Popup, Observer):
@@ -44,13 +53,28 @@ class SelectImagePins(Popup, Observer):
         if not self.model.selected_file:
             toast("Error with the file!")
             return
-        expansion = os.path.splitext(self.model.selected_file[0])[1]
+        expansion = os.path.splitext(self.model.selected_file)[1]
         if expansion != '.png' and expansion != '.jpg':
             toast("Error with the expansion an file!")
             return
-        self.subject.put_data(self.model.selected_file, self.model.num_points, self.model.list_inst)
+
+        progress_popup = ProgressGenerateImage(num_lines + 1)
+        progress_popup.bind(on_dismiss=self.next_after_generate_image)
+        progress_popup.open()
+        threading.Thread(target=generate.generate_sa,
+                         args=(self.model.selected_file,
+                               num_pins,
+                               num_lines,
+                               num_thread,
+                               progress_popup)).start()
+        self.dismiss()
+
+    def next_after_generate_image(self, instance):
+        self.subject.put_data(os.path.splitext(os.path.basename(self.model.selected_file))[0],
+                              self.model.num_points,
+                              self.model.list_inst)
         self.subject.detach(self)
-        # generate.generate_sa(self.selected_file[0], num_pins, num_lines, num_thread)
+        self.controller.switch_screen('view screen')
 
 
 class SelectProject(Popup, Observer):
@@ -66,24 +90,9 @@ class SelectProject(Popup, Observer):
         if not self.model.selected_file:
             toast("Error with the file!")
             return
-        if os.path.splitext(self.model.selected_file[0])[1] != '':
+        if os.path.splitext(self.model.selected_file)[1] != '':
             toast("Error with the expansion an file!")
             return
         self.subject.put_data(self.model.selected_file, self.model.num_points, self.model.list_inst)
         self.subject.detach(self)
-
-
-class ProgressGenerateImage(Popup):
-    pass
-    # def __init__(self, **kw):
-    #     super(ProgressGenerateImage, self).__init__(**kw)
-    #     var = self.progress_gen_image
-    #     print(var)
-    # def update_progress(self, dt):
-    #     progress_bar = self.popup.content
-    #     print(progress_bar)
-    #     if progress_bar.value < progress_bar.max:
-    #         progress_bar.value += dt
-    #     else:
-    #         self.popup.dismiss()
-
+        self.controller.switch_screen('view screen')

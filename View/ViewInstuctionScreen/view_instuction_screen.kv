@@ -1,6 +1,13 @@
 #:import Factory kivy.factory.Factory
 
 <ViewInstructionScreenView>:
+    canvas.before:
+        Color:
+            rgba: Colors.background_color
+        Rectangle:
+            size: self.size
+            pos: self.pos
+
     MDRectangleFlatButton:
         pos: 0, root.height - self.height
         on_release:
@@ -8,18 +15,19 @@
         Image:
             source: "assets//view_instruction_data//back.png"
 
+    # Квадрат по центру
     MDBoxLayout:
         size_hint: None, None
         size: '80dp', '40dp'
         pos_hint: {'center_x': .5, 'center_y': .546}
         canvas:
             Color:
-                rgba: 1, 233 / 255, 92 / 255, 1
+                rgba: Colors.button_color
             Rectangle:
                 pos: self.pos
                 size: self.size
             Color:
-                rgba: 1, 1, 1, 1
+                rgba: Colors.background_color
             Rectangle:
                 size: self.width / 1.2, self.height / 1.2
                 pos: self.center_x - self.width / 2.4, self.center_y - self.height / 2.4
@@ -28,6 +36,7 @@
     MDBoxLayout:
         orientation: 'vertical'
 
+        # Скорость
         MDBoxLayout:
             padding: 10
 
@@ -61,11 +70,13 @@
 
                 Widget:
 
+            # Инструкция
             MDBoxLayout:
                 id: inst_list
                 size_hint: 2.5, 1
                 orientation: 'vertical'
 
+            # Пауза
             MDGridLayout:
                 cols: 1
                 rows: 3
@@ -76,13 +87,14 @@
                 MDFloatingActionButton:
                     id: play_pause_button
                     icon: "pause"
-                    md_bg_color: 0, 0, 0, 0
+                    md_bg_color: Colors.button_color
                     size_hint: 1, None
                     on_type: small
                     on_release: root.toggle_play_pause()
 
                 Widget:
 
+        # Кнопки
         MDBoxLayout:
             orientation: 'horizontal'
             size_hint: 1, .1
@@ -91,18 +103,21 @@
             MDRectangleFlatButton:
                 size_hint: 1.5, 1
                 radius: [20]
+                md_bg_color: Colors.button_color
                 Image:
                     source: "assets//view_instruction_data//mic.png"
 
             MDLabel:
                 id: num_lines
                 text: "0/0"
+                color: Colors.button_color
                 halign: 'center'
                 size_hint: 1, 1
 
             MDRectangleFlatButton:
                 size_hint: 1.5, 1
                 radius: [20]
+                md_bg_color: Colors.button_color
                 on_release:
                     Factory.SearchLine(root).open()
                 Image:
@@ -110,7 +125,7 @@
 
 
 <SearchLine>:
-    title: 'Search line'
+    title: 'Поиск линии'
     size_hint: .5, .3
 
     MDBoxLayout:
@@ -125,8 +140,8 @@
         MDRectangleFlatButton:
             id: btn_ok
             text: 'OK'
-            md_bg_color: (10/255, 100/255, 10/255, 1)
-            text_color: (1, 1, 1, 1)
+            md_bg_color: Colors.button_color
+            text_color: Colors.background_color
             radius: [20]
             size_hint: 1, None
             on_release:

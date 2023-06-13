@@ -1,3 +1,5 @@
+import threading
+
 from kivy import Config, platform
 from kivy.core.window import Window
 from kivy.uix.screenmanager import ScreenManager

@@ -6,6 +6,7 @@ from kivymd.uix.label import MDLabel
 from kivymd.uix.screen import MDScreen
 from Utility.observer import Observer
 from Utility.subject import Subject
+from Utility.colors import button_color
 
 
 class ViewInstructionScreenView(MDScreen, Observer):
@@ -18,7 +19,7 @@ class ViewInstructionScreenView(MDScreen, Observer):
         super().__init__(**kw)
         self.subject.attach(self)
         for i in range(self.model.size_list_buffer_outlist):
-            label = MDLabel(halign='center')
+            label = MDLabel(halign='center', color=button_color)
             self.model.label_references.append(label)
             self.ids.inst_list.add_widget(label)
 
@@ -32,7 +33,7 @@ class ViewInstructionScreenView(MDScreen, Observer):
 
     def on_start(self):
         self.model.buffer_outlist = [''] * self.model.size_list_buffer_outlist
-        current_index = self.model.current_ind_list - int(self.model.size_list_buffer_outlist / 2) - 1
+        current_index = self.model.current_ind_list - int(self.model.size_list_buffer_outlist / 2)
 
         for i in range(self.model.size_list_buffer_outlist):
             if 0 <= i + current_index < len(self.model.list_inst):
@@ -41,13 +42,14 @@ class ViewInstructionScreenView(MDScreen, Observer):
                 self.model.buffer_outlist.append("")
             if current_index > len(self.model.list_inst):
                 self.model.buffer_outlist = self.model.buffer_outlist[::-1]
-        # print(self.model.list_inst[i])
+        self.model.buffer_outlist = self.model.buffer_outlist[-self.model.size_list_buffer_outlist:]
         self.update_inst_list()
+        self.ids.num_lines.color = button_color
         self.ids.num_lines.text = f"{self.model.current_ind_list} / {len(self.model.list_inst)}"
         self.schedule_read_list_inst()
 
     def schedule_read_list_inst(self):
-        Clock.schedule_once(self.read_list_inst, self.model.schedule_interval)
+        Clock.schedule_once(self.read_list_inst, self.model.schedule_interval - int(self.ids.slider_speed_id.value))
 
     def read_list_inst(self, dt):
         if self.model.current_ind_list < len(self.model.list_inst):
@@ -58,7 +60,6 @@ class ViewInstructionScreenView(MDScreen, Observer):
             else:
                 self.model.buffer_outlist.append("")
             self.model.buffer_outlist = self.model.buffer_outlist[-self.model.size_list_buffer_outlist:]
-            print(self.model.buffer_outlist)
             self.update_inst_list()
             self.model.current_ind_list += 1
             self.ids.num_lines.text = f"{self.model.current_ind_list} / {len(self.model.list_inst)}"
@@ -88,7 +89,6 @@ class SearchLine(Popup):
     def search_line(self, text):
         try:
             self.obj_visv.model.current_ind_list = self.obj_visv.model.list_inst.index(text)
-            print(self.obj_visv.model.current_ind_list)
             self.obj_visv.on_start()
         except ValueError:
             toast("No found!")
