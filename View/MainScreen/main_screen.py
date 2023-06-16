@@ -58,7 +58,7 @@ class SelectImagePins(Popup, Observer):
             toast("Error with the expansion an file!")
             return
 
-        progress_popup = ProgressGenerateImage(num_lines + 1)
+        progress_popup = ProgressGenerateImage(num_lines)
         progress_popup.bind(on_dismiss=self.next_after_generate_image)
         progress_popup.open()
         threading.Thread(target=generate.generate_sa,

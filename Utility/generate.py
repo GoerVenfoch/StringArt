@@ -130,4 +130,4 @@ def generate_sa(image_path, num_pins, num_lines, num_thread, progress_bar):
     # my_object.search_weigth_image()
     my_object.build_lines_list(progress_bar)
     my_object.write_file()
-    progress_bar.update_progress(1)
+    progress_bar.update_progress(10)
