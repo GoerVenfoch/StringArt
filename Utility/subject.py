@@ -23,11 +23,3 @@ class Subject:
         self._num_points = num
         self._list_inst = inst
         self.notify()
-
-    # def put_num_points(self, num) -> None:
-    #     self._num_points = num
-    #     self.notify()
-    #
-    # def put_list_inst(self, inst) -> None:
-    #     self._list_inst = inst
-    #     self.notify()

@@ -21,3 +21,6 @@ class ViewInstructionScreenController:
         self.model.current_ind_list = 0
         self.model.is_paused = None
         self.model.schedule_interval = 6
+
+    def set_pause(self):
+        self.view.toggle_play_pause()

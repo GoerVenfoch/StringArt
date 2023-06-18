@@ -5,7 +5,7 @@ class ViewInstructionScreenModel:
         self.label_references = []
         self.schedule_interval = 6
         self.current_ind_list = 0
-        self.is_paused = None
+        self.is_paused = False
         self.size_list_buffer_outlist = 15
         self.buffer_outlist = []
 
