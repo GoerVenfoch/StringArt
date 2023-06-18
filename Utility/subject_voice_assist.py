@@ -6,7 +6,7 @@ class SubjectVoiceAssistant:
     _observers: List[ObserverVoiceAssistant] = []
     _is_pause = True
     _slider_value = 0
-    _current_ind_list = 0
+    _current_number = 0
 
     def attach(self, observer: ObserverVoiceAssistant) -> None:
         self._observers.append(observer)
@@ -31,10 +31,11 @@ class SubjectVoiceAssistant:
             observer.update_speed(self)
 
     def put_data_pause(self) -> None:
+        self._is_pause = not self._is_pause
         self.notify_pause()
 
     def put_data_pin(self, pin) -> None:
-        self._current_ind_list = pin
+        self._current_number = pin
         self.notify_pin()
 
     def put_data_speed(self, value) -> None:

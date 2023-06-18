@@ -1,5 +1,6 @@
 from threading import Thread
 
+import num2words as num2words
 from kivy.properties import ObjectProperty
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.linear_model import LogisticRegression
@@ -26,6 +27,14 @@ class VoiceAssistant(ObserverVoiceAssistant):
         self.q = queue.Queue()
         self.device = sd.default.device
         self.samplerate = int(sd.query_devices(self.device[0], 'input')['default_samplerate'])
+
+    # Обновляется пауза
+    def update_pause(self, subject_voice_assist):
+        self.model.is_pause = subject_voice_assist._is_pause
+
+    # Обновляется скорость пролистывания инструкции
+    def update_speed(self, subject_voice_assist):
+        self.model.slider_value = subject_voice_assist._slider_value
 
     def callback(self, indata, frames, time, status):
         self.q.put(bytes(indata))
@@ -62,6 +71,13 @@ class VoiceAssistant(ObserverVoiceAssistant):
             if self.model.slider_value > -5:
                 self.model.slider_value -= 1
             self.subject.put_data_speed(self.model.slider_value)
+        elif func_name == 'search_pin':
+            # self.subject.put_data_pin(answer.split)
+            try:
+                number = text2int(data)
+                self.subject.put_data_pin(number)
+            except ValueError:
+                pass
         elif func_name == 'passive':
             pass
         # exec('self.subject.' + func_name + '()')
@@ -87,7 +103,6 @@ class VoiceAssistant(ObserverVoiceAssistant):
                     data = self.q.get()
                     if rec.AcceptWaveform(data):
                         data = json.loads(rec.Result())['text']
-                        print(data)
                         self.recognize(data, vectorizer, clf)
                     # else:
                     #     print(rec.PartialResult())
@@ -95,3 +110,40 @@ class VoiceAssistant(ObserverVoiceAssistant):
         thread = Thread(target=listening_thread)
         thread.daemon = True
         thread.start()
+
+
+# Преобразование текста в число
+def text2int(textnum, numwords=None):
+    if numwords is None:
+        numwords = {}
+    if not numwords:
+        units = [
+            "ноль", "один", "два", "три", "четыре", "пять", "шесть", "семь", "восемь",
+            "девять", "десять", "одиннадцать", "двенадцать", "тринадцать", "четырнадцать", "пятнадцать",
+            "шестнадцать", "семнадцать", "восемнадцать", "девятнадцать",
+        ]
+
+        tens = ["", "", "двадцать", "тридцать", "сорок", "пятьдесят", "шестьдесят", "семьдесят", "восемьдесят",
+                "девяносто"]
+
+        scales = ["сто", "тысяч", "миллион", "миллиард", "триллион"]
+
+        numwords["и"] = (1, 0)
+        for idx, word in enumerate(units):
+            numwords[word] = (1, idx)
+        for idx, word in enumerate(tens):
+            numwords[word] = (1, idx * 10)
+        for idx, word in enumerate(scales):
+            numwords[word] = (1, 10 ** (idx * 3 or 2))
+
+    current = result = 0
+    for word in textnum.split():
+        if word not in numwords:
+            continue
+        scale, increment = numwords[word]
+        current = current * scale + increment
+        if scale > 100:
+            result += current
+            current = 0
+
+    return result + current

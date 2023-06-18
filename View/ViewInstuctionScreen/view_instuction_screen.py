@@ -34,12 +34,19 @@ class ViewInstructionScreenView(MDScreen, Observer, ObserverVoiceAssistant):
         self.model.selected_file = subject._path_file
         self.model.list_inst = subject._list_inst
 
+    # Обновляется пауза через голосовой помощник
     def update_pause(self, subject_voice_assist):
-        self.toggle_play_pause()
+        self.put_play_pause()
 
+    # Запуск нового пина через голосовой помощник
     def update_pin(self, subject_voice_assist):
-        self.model.current_ind_list = subject_voice_assist._current_ind_list
+        Clock.schedule_once(lambda dt: self.start_update_pin(subject_voice_assist._current_number))
 
+    def start_update_pin(self, number):
+        self.model.current_ind_list = self.model.list_inst.index(str(number))
+        self.on_start()
+
+    # Обновляется скорость пролистывания инструкции через голосовой помощник
     def update_speed(self, subject_voice_assist):
         Clock.schedule_once(lambda dt: self.start_update_speed(self.ids.slider_speed_id,
                                                                int(subject_voice_assist._slider_value)))
@@ -48,6 +55,7 @@ class ViewInstructionScreenView(MDScreen, Observer, ObserverVoiceAssistant):
         slider.value = value
         self.schedule_read_list_inst()
 
+    # При отображении страницы
     def on_enter(self):
         self.ids.play_pause_button.icon = "pause"
         assistant = VoiceAssistant()
@@ -71,10 +79,16 @@ class ViewInstructionScreenView(MDScreen, Observer, ObserverVoiceAssistant):
         self.ids.num_lines.text = f"{self.model.current_ind_list} / {len(self.model.list_inst)}"
         self.schedule_read_list_inst()
 
+    def put_slider_speed_value(self):
+        self.subject_voice_assist.put_data_speed(int(self.ids.slider_speed_id.value))
+        self.schedule_read_list_inst()
+
+    # Установка интервалов для пролистывания инструкции
     def schedule_read_list_inst(self):
         Clock.unschedule(self.read_list_inst)
         Clock.schedule_once(self.read_list_inst, self.model.schedule_interval - int(self.ids.slider_speed_id.value))
 
+    # Чтение инструкции и формирование списка для вывода на экран
     def read_list_inst(self, dt):
         if self.model.current_ind_list < len(self.model.list_inst):
             if (self.model.current_ind_list + int(self.model.size_list_buffer_outlist / 2)) < len(self.model.list_inst):
@@ -91,12 +105,18 @@ class ViewInstructionScreenView(MDScreen, Observer, ObserverVoiceAssistant):
         else:
             Clock.unschedule(self.read_list_inst)
 
+    # Отрисовка инструкции
     def update_inst_list(self):
         for i in range(self.model.size_list_buffer_outlist):
             self.model.label_references[i].text = self.model.buffer_outlist[i]
-        # voice.speaker(self.model.label_references[int((self.model.size_list_buffer_outlist + 1) / 2)])
+        voice.speaker(str(self.model.buffer_outlist[int(self.model.size_list_buffer_outlist / 2)]))
 
     def toggle_play_pause(self):
+        self.subject_voice_assist.put_data_pause()
+        self.put_play_pause()
+
+    # Снятие и установка паузы
+    def put_play_pause(self):
         self.model.is_paused = not self.model.is_paused
         if self.model.is_paused:
             Clock.unschedule(self.read_list_inst)
@@ -106,6 +126,7 @@ class ViewInstructionScreenView(MDScreen, Observer, ObserverVoiceAssistant):
             Clock.schedule_once(self.read_list_inst, self.model.schedule_interval)
 
 
+# Поиск линии
 class SearchLine(Popup):
     def __init__(self, obj, **kwargs):
         super(SearchLine, self).__init__(**kwargs)
