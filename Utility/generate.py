@@ -11,7 +11,6 @@ class GSA:
         self.num_lines_end = num_lines
         self._point_list = []
         self._lines_list = []
-        # self._weight_image = self.image.size[0] * self.image.size[1] * 255
         self._weight_thread = num_thread
 
     def convert_gray(self):
@@ -38,14 +37,6 @@ class GSA:
             x = int(radius + radius * math.cos(i * angle))
             y = int(radius + radius * math.sin(i * angle))
             self._point_list.append((x, y))
-
-    # def search_weigth_image(self):
-    #     width, height = self.image.size
-    #
-    #     for y in range(height):
-    #         for x in range(width):
-    #             pixel = self.image.getpixel((x, y))
-    #             self._weight_image -= pixel
 
     def build_lines_list(self, progress_bar):
         start_point = self._point_list[0]
@@ -121,7 +112,6 @@ def generate_sa(image_path, num_pins, num_lines, num_thread, progress_bar):
     my_object = GSA(image_path, num_pins, num_lines, num_thread)
     my_object.put_mask()
     my_object.init_points_list()
-    # my_object.search_weigth_image()
     my_object.build_lines_list(progress_bar)
     my_object.write_file()
     progress_bar.update_progress(10)
