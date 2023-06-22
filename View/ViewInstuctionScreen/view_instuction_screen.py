@@ -109,11 +109,10 @@ class ViewInstructionScreenView(MDScreen, Observer, ObserverVoiceAssistant):
     def update_inst_list(self):
         for i in range(self.model.size_list_buffer_outlist):
             self.model.label_references[i].text = self.model.buffer_outlist[i]
-        voice.speaker(str(self.model.buffer_outlist[int(self.model.size_list_buffer_outlist / 2)]))
+        # voice.speaker(str(self.model.buffer_outlist[int(self.model.size_list_buffer_outlist / 2)]))
 
     def toggle_play_pause(self):
         self.subject_voice_assist.put_data_pause()
-        self.put_play_pause()
 
     # Снятие и установка паузы
     def put_play_pause(self):

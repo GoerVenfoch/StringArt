@@ -73,6 +73,7 @@ class SelectImagePins(Popup, Observer):
         self.subject.put_data(os.path.splitext(os.path.basename(self.model.selected_file))[0],
                               self.model.num_points,
                               self.model.list_inst)
+
         self.subject.detach(self)
         self.controller.switch_screen('view screen')
 

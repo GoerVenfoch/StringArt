@@ -1,7 +1,5 @@
 from threading import Thread
 
-import num2words as num2words
-from kivy.properties import ObjectProperty
 from sklearn.feature_extraction.text import CountVectorizer
 from sklearn.linear_model import LogisticRegression
 import sounddevice as sd
@@ -12,7 +10,6 @@ import queue
 
 import voice_assist.words as words
 import voice_assist.voice as voice
-import View.ViewInstuctionScreen.view_instuction_screen as screen
 from Model.voice_assist import VoiceAssistantModel
 from Utility.subject_voice_assist import SubjectVoiceAssistant
 from Utility.observer_voice_assist import ObserverVoiceAssistant

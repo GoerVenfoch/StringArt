@@ -2,9 +2,6 @@ import os
 from PIL import Image, ImageDraw
 import math
 
-# from kivy.clock import Clock
-# from kivy.uix.popup import Popup
-
 
 class GSA:
     def __init__(self, image_path, num_pins, num_lines, num_thread):
@@ -52,12 +49,11 @@ class GSA:
 
     def build_lines_list(self, progress_bar):
         start_point = self._point_list[0]
-        # end = self._weight_image * (0.60 - 1 / self._weight_thread)
-        # dt = 100 / self.num_lines_end
+
         for i in range(self.num_lines_end):
-            print(i)
             progress_bar.update_progress(1)
             end_point = self.search_line(start_point)
+            # print(str(start_point) + " " + str(end_point))
             self._lines_list.append((start_point, end_point))
             start_point = end_point
 
@@ -83,7 +79,6 @@ class GSA:
             pixel = self.image.getpixel(y)
             new_pixel = max(pixel + self._weight_thread, 0)
             self.image.putpixel(y, new_pixel)
-            # self._weight_image -= self.image.getpixel(y) - pixel
 
     def write_file(self):
         with open(self._filename, 'w') as file:
@@ -123,7 +118,6 @@ def alg_brezenhem(start_point, end_point):
 
 
 def generate_sa(image_path, num_pins, num_lines, num_thread, progress_bar):
-    print("Task started")
     my_object = GSA(image_path, num_pins, num_lines, num_thread)
     my_object.put_mask()
     my_object.init_points_list()

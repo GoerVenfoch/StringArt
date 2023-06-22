@@ -60,7 +60,6 @@ class StringArtPreview(Widget):
             toast("Невозможно прочитать файл")
             self.controller.switch_screen('main screen')
 
-
     def draw_points(self):
         self.canvas.clear()
         angle = 2 * math.pi / self.num_points
@@ -79,8 +78,8 @@ class StringArtPreview(Widget):
         with self.canvas:
             for i in range(1, len(self.model.list_inst)):
                 Color(1 / 255, 1 / 255, 1 / 255)
-                Line(points=(self.center_x + int(self.model.list_point[start][0] - 1),
-                             self.center_y + int(self.model.list_point[start][1] - 1),
-                             self.center_x + int(self.model.list_point[int(self.model.list_inst[i])][0] - 1),
-                             self.center_y + int(self.model.list_point[int(self.model.list_inst[i])][1] - 1)))
+                Line(points=(self.center_x - int(self.model.list_point[start][0] + 1),
+                             self.center_y - int(self.model.list_point[start][1] + 1),
+                             self.center_x - int(self.model.list_point[int(self.model.list_inst[i])][0] + 1),
+                             self.center_y - int(self.model.list_point[int(self.model.list_inst[i])][1] + 1)))
                 start = int(self.model.list_inst[i])

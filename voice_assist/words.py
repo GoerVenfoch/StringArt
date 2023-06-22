@@ -1,4 +1,4 @@
-TRIGGERS = {'пин', 'санёк' }
+TRIGGERS = {'пин'}
 
 data_set = {
 
