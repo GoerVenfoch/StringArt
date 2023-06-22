@@ -74,6 +74,7 @@ class ViewInstructionScreenView(MDScreen, Observer, ObserverVoiceAssistant):
             if current_index > len(self.model.list_inst):
                 self.model.buffer_outlist = self.model.buffer_outlist[::-1]
         self.model.buffer_outlist = self.model.buffer_outlist[-self.model.size_list_buffer_outlist:]
+        self.model.current_ind_list += 1
         self.update_inst_list()
         self.ids.num_lines.color = button_color
         self.ids.num_lines.text = f"{self.model.current_ind_list} / {len(self.model.list_inst)}"
@@ -97,6 +98,7 @@ class ViewInstructionScreenView(MDScreen, Observer, ObserverVoiceAssistant):
                                                  int(self.model.size_list_buffer_outlist / 2)])
             else:
                 self.model.buffer_outlist.append("")
+            print(self.model.buffer_outlist)
             self.model.buffer_outlist = self.model.buffer_outlist[-self.model.size_list_buffer_outlist:]
             self.update_inst_list()
             self.model.current_ind_list += 1
